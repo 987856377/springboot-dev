@@ -5,13 +5,9 @@ import com.spring.development.common.ResultJson;
 import com.spring.development.module.user.entity.User;
 import com.spring.development.module.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,14 +27,10 @@ import java.util.concurrent.Future;
 public class UserController {
 
     @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
     private UserService userService;
 
     @RequestMapping("/add")
     public ResultJson add(@RequestBody User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Integer integer = null;
         try {
             integer = userService.insert(user).get();
