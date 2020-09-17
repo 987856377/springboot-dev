@@ -1,5 +1,6 @@
 package com.spring.development.module.user.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.spring.development.module.user.entity.User;
 import com.spring.development.module.user.mapper.UserMapper;
@@ -35,6 +36,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Async
     @Override
+    @DS("slave")
     public Future<Integer> insert(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return new AsyncResult<>(userMapper.insert(user));
