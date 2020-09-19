@@ -40,6 +40,28 @@ public class UserController {
         return ResultJson.success(integer);
     }
 
+    @RequestMapping("/update")
+    public ResultJson update(@RequestBody User user){
+        Integer integer = null;
+        try {
+            integer = userService.update(user).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return ResultJson.success(integer);
+    }
+
+    @RequestMapping("/getUser")
+    public ResultJson get(@RequestBody User user){
+        User user1 = null;
+        try {
+            user1 = userService.getUser(user).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return ResultJson.success(user1);
+    }
+
     @RequestMapping("/list")
     public ResultJson list(){
         Future<List<User>> allUser = userService.getAllUser();
