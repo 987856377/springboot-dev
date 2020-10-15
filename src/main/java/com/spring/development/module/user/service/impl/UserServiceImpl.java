@@ -80,6 +80,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return new AsyncResult<>(insert);
     }
 
+
+    @Override
+    public Future<Integer> update(User user) {
+        if (user.getPassword() != null && !"".equals(user.getPassword())){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(passwordEncoder.encode("123456"));
+        }
+        return new AsyncResult<>(userMapper.updateUser(user));
+    }
+
+    @Override
+    public Future<User> getUser(User user) {
+        return new AsyncResult<>(userMapper.getUser(user));
+    }
+
+
     @Async
     @Override
     public Future<Integer> removeById(Long id) {
