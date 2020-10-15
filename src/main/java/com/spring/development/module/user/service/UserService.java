@@ -16,7 +16,9 @@ import java.util.concurrent.Future;
  */
 public interface UserService extends IService<User> {
 
-    Future<Integer> insert(User user);
+    Future<Integer> insertMaster(User user);
+
+    Future<Integer> insertSlave(User user);
 
     Future<Integer> removeById(Long id);
 

@@ -1,6 +1,7 @@
 package com.spring.development.module.user.controller;
 
 
+import com.spring.development.common.ResultCode;
 import com.spring.development.common.ResultJson;
 import com.spring.development.module.user.entity.User;
 import com.spring.development.module.user.service.UserService;
@@ -33,9 +34,10 @@ public class UserController {
     public ResultJson add(@RequestBody User user){
         Integer integer = null;
         try {
-            integer = userService.insert(user).get();
+            integer = userService.insertMaster(user).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            return ResultJson.failure(ResultCode.INTERNAL_SERVER_ERROR);
         }
         return ResultJson.success(integer);
     }

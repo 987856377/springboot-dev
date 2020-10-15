@@ -2,6 +2,8 @@ package com.spring.development.module.user.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.spring.development.module.role.entity.Role;
+import com.spring.development.module.role.service.RoleService;
 import com.spring.development.module.user.entity.User;
 import com.spring.development.module.user.mapper.UserMapper;
 import com.spring.development.module.user.service.UserService;
@@ -12,6 +14,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 import java.util.concurrent.Future;
@@ -25,7 +28,7 @@ import java.util.concurrent.Future;
  * @since 2020-09-11
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
@@ -34,12 +37,47 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private RoleService roleService;
+
+    @DS("master")
     @Async
     @Override
-    @DS("slave")
-    public Future<Integer> insert(User user) {
+    public Future<Integer> insertMaster(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return new AsyncResult<>(userMapper.insert(user));
+        int insert = 0;
+        Integer admin = 0;
+        try {
+            insert = userMapper.insert(user);
+            if (insert > 0){
+                admin = roleService.insertRole(new Role("admin")).get();
+                if (admin.equals(0)){
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return new AsyncResult<>(admin);
+    }
+
+    @DS("slave")
+    @Async
+    @Override
+    public Future<Integer> insertSlave(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        int insert = 0;
+        try {
+            insert = userMapper.insert(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return new AsyncResult<>(insert);
     }
 
     @Async
