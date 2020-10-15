@@ -14,4 +14,33 @@
         id, username, password
     </sql>
 
+    <select id="getUser" resultType="com.spring.development.module.user.entity.User">
+        select
+        <include refid="Base_Column_List"></include>
+        from user
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+        </trim>
+    </select>
+
+    <update id="updateUser" parameterType="com.spring.development.module.user.entity.User">
+        update user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and username != ''">
+                password = #{password},
+            </if>
+        </trim>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
 </mapper>

@@ -20,8 +20,11 @@ public interface UserService extends IService<User> {
 
     Future<Integer> insertSlave(User user);
 
+    Future<Integer> update(User user);
+
     Future<Integer> removeById(Long id);
 
     Future<List<User>> getAllUser();
 
+    Future<User> getUser(User user);
 }
