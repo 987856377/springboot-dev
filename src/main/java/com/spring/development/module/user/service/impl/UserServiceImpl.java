@@ -48,12 +48,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         int insert = 0;
         Integer admin = 0;
-        insert = userMapper.insert(user);
         try {
+            insert = userMapper.insert(user);
             admin = roleService.insertRole(new Role("admin")).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
