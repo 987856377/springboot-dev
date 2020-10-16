@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -28,7 +29,6 @@ import java.util.concurrent.Future;
  * @since 2020-09-11
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
@@ -40,6 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private RoleService roleService;
 
+    @Transactional
     @DS("master")
     @Async
     @Override
@@ -47,18 +48,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         int insert = 0;
         Integer admin = 0;
+        insert = userMapper.insert(user);
         try {
-            insert = userMapper.insert(user);
-            if (insert > 0){
-                admin = roleService.insertRole(new Role("admin")).get();
-                if (admin.equals(0)){
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                }
-            }
-        } catch (Exception e) {
+            admin = roleService.insertRole(new Role("admin")).get();
+        } catch (InterruptedException e) {
             e.printStackTrace();
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
         }
+//        try {
+//            insert = userMapper.insert(user);
+//            if (insert > 0){
+//                admin = roleService.insertRole(new Role("admin")).get();
+//                if (admin.equals(0)){
+//                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//        }
 
         return new AsyncResult<>(admin);
     }

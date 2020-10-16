@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
@@ -23,23 +24,26 @@ import java.util.concurrent.Future;
  * @since 2020-10-15
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Autowired
     private RoleMapper roleMapper;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @DS("slave")
     @Async
     @Override
     public Future<Integer> insertRole(Role role) {
         int insert = 0;
-        try {
-            insert = roleMapper.insert(role);
-        } catch (Exception e) {
-            e.printStackTrace();
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        }
+        insert = roleMapper.insert(role);
+//        try {
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//        }
+        int a = 1/0;
         return new AsyncResult<>(insert);
     }
 }
