@@ -1,4 +1,4 @@
-package com.spring.development.common.handler.exception;
+package com.spring.development.common.exception;
 
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
@@ -7,7 +7,7 @@ import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 
 import java.lang.reflect.Method;
 
-public class AsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
+public class AsyncException implements AsyncUncaughtExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

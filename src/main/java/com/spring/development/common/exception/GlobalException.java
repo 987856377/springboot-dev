@@ -1,4 +1,4 @@
-package com.spring.development.common.handler.exception;
+package com.spring.development.common.exception;
 
 import com.spring.development.common.ResultCode;
 import com.spring.development.common.ResultJson;
@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalException {
 
-    private Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private Logger logger = LoggerFactory.getLogger(GlobalException.class);
 
     @Value("${spring.servlet.multipart.max-file-size}")
     private String maxFileSize;

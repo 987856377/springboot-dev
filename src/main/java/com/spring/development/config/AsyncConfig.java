@@ -1,6 +1,6 @@
 package com.spring.development.config;
 
-import com.spring.development.common.handler.exception.AsyncExceptionHandler;
+import com.spring.development.common.exception.AsyncException;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -34,7 +34,7 @@ public class AsyncConfig implements AsyncConfigurer {
      */
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new AsyncExceptionHandler();
+        return new AsyncException();
     }
 
 
