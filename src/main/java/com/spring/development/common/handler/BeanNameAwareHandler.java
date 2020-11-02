@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class BeanNameAwareHandler implements BeanNameAware {
 
     public BeanNameAwareHandler() {
-        System.out.println("BeanNameAwareHandler constructor");
+        System.out.println("[BeanNameAwareHandler] constructor");
     }
 
     /**
