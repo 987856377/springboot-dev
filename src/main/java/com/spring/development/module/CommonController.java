@@ -1,7 +1,11 @@
 package com.spring.development.module;
 
+import com.spring.development.common.event.ApplicationNotifyEvent;
+import com.spring.development.common.holder.ApplicationEventPublisherHolder;
 import com.spring.development.module.user.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +15,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class CommonController {
 
     private final AtomicLong counter = new AtomicLong();
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     /*
     * https://blog.csdn.net/f112122/article/details/47372967
@@ -30,6 +37,8 @@ public class CommonController {
 
     @RequestMapping("/user")
     public String user(){
+        ApplicationEventPublisherHolder.publishEvent(new ApplicationNotifyEvent(counter,true));
+        applicationEventPublisher.publishEvent(new ApplicationNotifyEvent(counter,true));
         return "Greetings user from Spring Boot! " + counter.incrementAndGet();
     }
 
