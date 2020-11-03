@@ -21,6 +21,10 @@ public class ApplicationNotifyEvent extends ApplicationEvent {
         this.isNotified = isNotified;
     }
 
+    public Boolean getNotified() {
+        return isNotified;
+    }
+
     @Override
     public String toString() {
         return "ApplicationNotifyEvent{" +
