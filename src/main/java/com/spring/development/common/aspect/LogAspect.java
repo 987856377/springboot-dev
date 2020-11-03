@@ -24,22 +24,15 @@ public class LogAspect {
     @Around("log()")
     public Object around(ProceedingJoinPoint joinPoint) {
 
-//        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 
         try {
             long startTimeMillis = System.currentTimeMillis();
             //调用 proceed() 方法才会真正的执行实际被代理的方法
             Object result = joinPoint.proceed();
 
-            String input = Arrays.toString(joinPoint.getArgs());
-
-            String ouput = JSON.toJSONString(result);
-
             long consultTime = System.currentTimeMillis() - startTimeMillis;
-            logger.info("请求接口路径: "+ joinPoint);
-            logger.info("入参:" + input);
-            logger.info("出参:" + ouput);
-            logger.info("执行时间: " + consultTime + " 毫秒");
+            logger.info("\n请求URL: "+request.getRequestURI()+"\n入参:"+ Arrays.toString(joinPoint.getArgs()) +"\n出参:"+ JSON.toJSONString(result) +"\n执行时间: "+ consultTime +" 毫秒");
 
             return result;
         } catch (Throwable throwable) {
