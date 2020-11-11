@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -21,6 +22,9 @@ public class CommonController {
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
+    ServletContext servletContext;
 
     /*
     * https://blog.csdn.net/f112122/article/details/47372967
@@ -36,8 +40,9 @@ public class CommonController {
         user.setUsername("NIL");
         user.setPassword((String.valueOf(counter.incrementAndGet())));
         try {
+            System.out.println("servletContext.getContextPath() = " + servletContext.getContextPath());
             System.out.println(ResourceLoaderHolder.getLoader().getResource("application.properties").getFile());
-            System.out.println(EnvironmentHolder.getEnvironment().getProperty("server.port"));
+            System.out.println("EnvironmentHolder.getEnvironment().getProperty(\"server.port\") = " + EnvironmentHolder.getEnvironment().getProperty("server.port"));
         } catch (IOException e) {
             e.printStackTrace();
         }
