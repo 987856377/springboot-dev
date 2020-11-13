@@ -4,6 +4,7 @@ import com.spring.development.common.event.ApplicationNotifyEvent;
 import com.spring.development.common.holder.ApplicationEventPublisherHolder;
 import com.spring.development.common.holder.EnvironmentHolder;
 import com.spring.development.common.holder.ResourceLoaderHolder;
+import com.spring.development.config.SmsConfig;
 import com.spring.development.module.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,7 +25,10 @@ public class CommonController {
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    ServletContext servletContext;
+    private ServletContext servletContext;
+
+    @Autowired
+    private SmsConfig smsConfig;
 
     /*
     * https://blog.csdn.net/f112122/article/details/47372967
@@ -39,6 +43,8 @@ public class CommonController {
         User user = new User();
         user.setUsername("NIL");
         user.setPassword((String.valueOf(counter.incrementAndGet())));
+        System.out.println(smsConfig.getUrl());
+
         try {
             System.out.println("servletContext.getContextPath() = " + servletContext.getContextPath());
             System.out.println(ResourceLoaderHolder.getLoader().getResource("application.properties").getFile());
