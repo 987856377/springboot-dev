@@ -24,7 +24,7 @@ public class MybatisPlusConfig {
      * 多租户，请参考官网【插件扩展】
      */
     @Bean
-    public MybatisPlusInterceptor paginationInterceptor() {
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
         return new MybatisPlusInterceptor();
     }
 
