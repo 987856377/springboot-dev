@@ -1,5 +1,6 @@
 package com.spring.development.config;
 
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +24,8 @@ public class MybatisPlusConfig {
      * 多租户，请参考官网【插件扩展】
      */
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+    public MybatisPlusInterceptor paginationInterceptor() {
+        return new MybatisPlusInterceptor();
     }
 
    /*
