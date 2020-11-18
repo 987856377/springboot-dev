@@ -1,12 +1,12 @@
 package com.spring.development.module;
 
-import com.spring.common.utils.RedisUtils;
 import com.spring.development.common.event.ApplicationNotifyEvent;
 import com.spring.development.common.holder.ApplicationEventPublisherHolder;
 import com.spring.development.common.holder.EnvironmentHolder;
 import com.spring.development.common.holder.ResourceLoaderHolder;
 import com.spring.development.config.SmsConfig;
 import com.spring.development.module.user.entity.User;
+import com.spring.redis.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
