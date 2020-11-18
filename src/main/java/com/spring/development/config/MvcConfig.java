@@ -20,7 +20,8 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedHeaders("*")
-                .allowedOrigins("*")
+//                .allowedOrigins("*")
+                .allowedOriginPatterns("*")
                 .allowedMethods("OPTIONS","GET","POST","PUT","DELETE")
                 .exposedHeaders("Authorization")
                 .maxAge(3600);

@@ -1,5 +1,6 @@
 package com.spring.development.module;
 
+import com.spring.common.utils.RedisUtils;
 import com.spring.development.common.event.ApplicationNotifyEvent;
 import com.spring.development.common.holder.ApplicationEventPublisherHolder;
 import com.spring.development.common.holder.EnvironmentHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -30,6 +32,9 @@ public class CommonController {
     @Autowired
     private SmsConfig smsConfig;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     /*
     * https://blog.csdn.net/f112122/article/details/47372967
     * @cache（“something");这个相当于save（）操作，
@@ -40,11 +45,11 @@ public class CommonController {
     @Cacheable("index")
     @RequestMapping("/")
     public User index(){
+        redisUtils.set("name", UUID.randomUUID(),36000);
         User user = new User();
-        user.setUsername("NIL");
+        user.setUsername("NIL" + redisUtils.get("name",String.class));
         user.setPassword((String.valueOf(counter.incrementAndGet())));
         System.out.println(smsConfig.getUrl());
-
         try {
             System.out.println("servletContext.getContextPath() = " + servletContext.getContextPath());
             System.out.println(ResourceLoaderHolder.getLoader().getResource("application.properties").getFile());

@@ -1,7 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'org.springframework.boot' version '2.4.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
+    id 'maven'
 }
 
 group = 'com.example'
@@ -28,10 +29,10 @@ dependencies {
     compile group: 'com.baomidou', name: 'mybatis-plus-generator', version: '3.4.0'
     compile group: 'org.mybatis.caches', name: 'mybatis-ehcache', version: '1.2.1'
     compile group: 'org.freemarker', name: 'freemarker', version: '2.3.30'
-    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.73'
-    compile group: 'com.google.guava', name: 'guava', version: '29.0-jre'
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.75'
+    compile group: 'com.google.guava', name: 'guava', version: '30.0-jre'
     compile group: 'cglib', name: 'cglib', version: '3.3.0'
-    compile group: 'cn.hutool', name: 'hutool-all', version: '5.4.1'
+    compile group: 'cn.hutool', name: 'hutool-all', version: '5.5.1'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
