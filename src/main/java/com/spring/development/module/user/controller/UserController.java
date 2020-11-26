@@ -1,6 +1,7 @@
 package com.spring.development.module.user.controller;
 
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.spring.development.common.ResultCode;
 import com.spring.development.common.ResultJson;
 import com.spring.development.module.user.entity.User;
@@ -86,6 +87,32 @@ public class UserController {
             e.printStackTrace();
         }
         return ResultJson.success(integer);
+    }
+
+    @RequestMapping("/toM")
+    @DS("master")
+    public ResultJson toM(){
+        for ( int i = 0; i < 100; i++){
+            new Thread(() -> {
+                for (int j = 0; j < 100; j++) {
+                    userService.toM(new User("xzk","123"));
+                }
+            },"Thread- toM - " + i + " -Running: ").start();
+        }
+        return ResultJson.success();
+    }
+
+    @RequestMapping("/toS")
+    @DS("slave")
+    public ResultJson toS(){
+        for ( int i = 0; i < 100; i++){
+             new Thread(() -> {
+                 for (int j = 0; j < 100; j++) {
+                     userService.toS(new User("xzk","123"));
+                 }
+             },"Thread- toS - " + i + " -Running: ").start();
+        }
+        return ResultJson.success();
     }
 
 }

@@ -116,4 +116,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Future<List<User>> getAllUser() {
         return new AsyncResult<>(userMapper.selectList(new QueryWrapper<>()));
     }
+
+    @Transactional
+    @DS("master")
+    @Async
+    @Override
+    public void toM(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userMapper.insert(user);
+    }
+
+    @Transactional
+    @DS("slave")
+    @Async
+    @Override
+    public void toS(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userMapper.insert(user);
+    }
 }

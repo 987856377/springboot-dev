@@ -27,4 +27,8 @@ public interface UserService extends IService<User> {
     Future<List<User>> getAllUser();
 
     Future<User> getUser(User user);
+
+    void toM(User user);
+
+    void toS(User user);
 }

@@ -36,7 +36,6 @@ public class CommonController {
     private RedisUtils redisUtils;
 
     /*
-    * https://blog.csdn.net/f112122/article/details/47372967
     * @cache（“something");这个相当于save（）操作，
     * @cachePut相当于Update（）操作，只要他标示的方法被调用，那么都会缓存起来，而@cache则是先看下有没已经缓存了，然后再选择是否执行方法。
     * @CacheEvict相当于Delete（）操作。用来清除缓存用的。
@@ -49,7 +48,8 @@ public class CommonController {
         User user = new User();
         user.setUsername("NIL" + redisUtils.get("name",String.class));
         user.setPassword((String.valueOf(counter.incrementAndGet())));
-        System.out.println(smsConfig.getUrl());
+        System.out.println("smsConfig.getUrl() = " + smsConfig.getUrl());
+        System.out.println("smsConfig.getContent() = " + smsConfig.getContent());
         try {
             System.out.println("servletContext.getContextPath() = " + servletContext.getContextPath());
             System.out.println(ResourceLoaderHolder.getLoader().getResource("application.properties").getFile());
