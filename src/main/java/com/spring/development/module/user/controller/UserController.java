@@ -119,7 +119,7 @@ public class UserController {
                 font.setItalic(true);
                 //第二个参数表示是否忽略头部样式
                 writer.getStyleSet().setFont(font, true);
-                writer.autoSizeColumn(2);
+                writer.autoSizeColumnAll();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String date = sdf.format(new Date());
 
