@@ -14,5 +14,5 @@ import java.util.concurrent.Future;
  * @since 2020-10-15
  */
 public interface RoleService extends IService<Role> {
-    Future<Integer> insertRole(Role role);
+    Integer insertRole(Role role);
 }

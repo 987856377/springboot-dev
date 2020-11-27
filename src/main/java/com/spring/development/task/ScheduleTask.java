@@ -11,12 +11,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableScheduling
-@EnableAsync
 public class ScheduleTask {
 
     private Logger logger = LoggerFactory.getLogger(ScheduleTask.class);
 
-    @Async
     @Scheduled(cron = "0 0/30 * * * ?") //间隔30分钟
     public void unReadMessageTask(){
         logger.info(String.format("启动监控服务: %s",Thread.currentThread().getName()));

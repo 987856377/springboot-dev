@@ -32,18 +32,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @DS("slave")
-    @Async
     @Override
-    public Future<Integer> insertRole(Role role) {
-        int insert = 0;
-        insert = roleMapper.insert(role);
-//        try {
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//        }
+    public Integer insertRole(Role role) {
+        Integer flag = roleMapper.insert(role);
+
+//        设置异常
         int a = 1/0;
-        return new AsyncResult<>(insert);
+        return flag;
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserMapper extends BaseMapper<User> {
-    int updateUser(User user);
+    Integer updateUser(User user);
 
     User getUser(User user);
 }
