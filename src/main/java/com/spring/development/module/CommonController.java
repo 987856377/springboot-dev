@@ -2,20 +2,24 @@ package com.spring.development.module;
 
 import com.spring.development.common.event.ApplicationNotifyEvent;
 import com.spring.development.common.event.ApplicationMessageEvent;
-import com.spring.development.common.holder.ApplicationEventPublisherHolder;
-import com.spring.development.common.holder.EnvironmentHolder;
-import com.spring.development.common.holder.ResourceLoaderHolder;
+import com.spring.development.common.holder.*;
 import com.spring.development.config.SmsConfig;
 import com.spring.development.module.user.entity.User;
 import com.spring.redis.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletContext;
+import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -72,5 +76,25 @@ public class CommonController {
     @RequestMapping("/admin")
     public String admin(){
         return "Greetings admin from Spring Boot! " + counter.incrementAndGet();
+    }
+
+    @RequestMapping("/test/addDataSource")
+    public Boolean addDataSource(){
+        DataSource build = DataSourceBuilder.create()
+                .driverClassName("com.mysql.cj.jdbc.Driver")
+                .url("jdbc:mysql://localhost:3306/development?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=false")
+                .username("root")
+                .password("root").build();
+
+        DataSource dataSource = MultiDataSourceHolder.buildDataSource("mysql", "localhost", "3306", "development", "root", "root", "");
+
+        return MultiDataSourceHolder.addDataSource("development", dataSource);
+    }
+
+    @RequestMapping("/test/getFromDataSource")
+    public List<Map<String, Object>> getFromDataSource(){
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(Objects.requireNonNull(MultiDataSourceHolder.getDataSource("development")));
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList("select * from role");
+        return maps;
     }
 }

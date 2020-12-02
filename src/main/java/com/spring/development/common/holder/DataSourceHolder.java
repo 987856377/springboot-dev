@@ -5,17 +5,17 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import javax.sql.DataSource;
 
 /**
- * @Description
+ * @Description 单数据源控制器
  * @Project development
  * @Package com.spring.development.datasource
  * @Author xuzhenkui
  * @Date 2020/2/26 18:27
  */
 public class DataSourceHolder {
-    private static final ThreadLocal<DataSource> contextHolder = new ThreadLocal<>();
+    private static final ThreadLocal<DataSource> DATA_SOURCE_THREAD_LOCAL = new ThreadLocal<>();
 
     static {
-        contextHolder.set(DataSourceBuilder.create()
+        DATA_SOURCE_THREAD_LOCAL.set(DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
                 .url("jdbc:mysql://localhost:3306/development?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=false")
                 .username("root")
@@ -23,10 +23,10 @@ public class DataSourceHolder {
     }
 
     public static DataSource getDataSource(){
-        return contextHolder.get();
+        return DATA_SOURCE_THREAD_LOCAL.get();
     }
 
     public static void setDataSource(DataSource dataSource){
-        contextHolder.set(dataSource);
+        DATA_SOURCE_THREAD_LOCAL.set(dataSource);
     }
 }

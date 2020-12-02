@@ -58,8 +58,8 @@ public enum ResultCode {
     GATEWAY_TIME_OUT(504,"充当网关或代理的服务器，未及时从远端服务器获取请求"),
     HTTP_VERSION_NOT_SUPPORTED(505,"服务器不支持请求的HTTP协议的版本，无法完成处理");
 
-    private int code;
-    private String message;
+    private final int code;
+    private final String message;
 
     ResultCode(int code, String message) {
         this.code = code;
