@@ -1,6 +1,7 @@
 package com.spring.development.module;
 
 import com.spring.development.common.event.ApplicationNotifyEvent;
+import com.spring.development.common.event.ApplicationMessageEvent;
 import com.spring.development.common.holder.ApplicationEventPublisherHolder;
 import com.spring.development.common.holder.EnvironmentHolder;
 import com.spring.development.common.holder.ResourceLoaderHolder;
@@ -64,6 +65,7 @@ public class CommonController {
     public String user(){
         ApplicationEventPublisherHolder.publishEvent(new ApplicationNotifyEvent(counter,true));
         applicationEventPublisher.publishEvent(new ApplicationNotifyEvent(counter,true));
+        applicationEventPublisher.publishEvent(new ApplicationMessageEvent("用户消息发送成功!"));
         return "Greetings user from Spring Boot! " + counter.incrementAndGet();
     }
 
