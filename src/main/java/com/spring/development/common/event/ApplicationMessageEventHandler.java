@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class ApplicationMessageEventHandler {
 
     @EventListener
-    public void handleOrderEvent(ApplicationMessageEvent event) {
+    public void handleMessageEvent(ApplicationMessageEvent event) {
         System.out.println("我监听到了 ApplicationReplyEvent 发布的message为:" + event.getMessage());
     }
 }
