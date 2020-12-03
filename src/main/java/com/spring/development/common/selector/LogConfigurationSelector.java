@@ -1,4 +1,4 @@
-package com.spring.development.selector;
+package com.spring.development.common.selector;
 
 import com.spring.development.common.annotation.EnableLog;
 import com.spring.development.common.enums.LogMode;
@@ -6,24 +6,19 @@ import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
  * @program: springboot-dev
- * @package com.spring.development.selector
+ * @package com.spring.development.common.selector
  * @description
  * @author: XuZhenkui
  * @create: 2020-11-19 10:24
  **/
 public class LogConfigurationSelector implements ImportSelector {
-    private static final String LOG_DEBUG_CONFIG = "com.spring.development.config.LogDebugConfig";
     private static final String LOG_INFO_CONFIG = "com.spring.development.config.LogInfoConfig";
-    private static final String LOG_WARN_CONFIG = "com.spring.development.config.LogWarnConfig";
     private static final String LOG_ERROR_CONFIG = "com.spring.development.config.LogErrorConfig";
-    private static final String LOG_ALL_CONFIG = "com.spring.development.config.LogAllConfig";
 
     /**
      * The default advice mode attribute name.
@@ -52,17 +47,11 @@ public class LogConfigurationSelector implements ImportSelector {
         Map<String, Object> annotationAttributes = importingClassMetadata.getAnnotationAttributes(EnableLog.class.getName());
         LogMode mode = (LogMode) annotationAttributes.get(getAdviceModeAttributeName());
         switch (mode) {
-            case DEBUG:
-                return new String[]{LOG_DEBUG_CONFIG};
             case INFO:
                 return new String[]{LOG_INFO_CONFIG};
-            case WARN:
-                return new String[]{LOG_WARN_CONFIG};
             case ERROR:
                 return new String[]{LOG_ERROR_CONFIG};
-            case ALL:
-                return new String[]{LOG_ALL_CONFIG};
         }
-        return new String[]{LOG_ALL_CONFIG};
+        return new String[]{LOG_INFO_CONFIG};
     }
 }

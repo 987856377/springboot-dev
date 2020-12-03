@@ -1,7 +1,7 @@
 package com.spring.development.common.annotation;
 
 import com.spring.development.common.enums.LogMode;
-import com.spring.development.selector.LogConfigurationSelector;
+import com.spring.development.common.selector.LogConfigurationSelector;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -18,5 +18,5 @@ import java.lang.annotation.*;
 @Documented
 @Import(LogConfigurationSelector.class)
 public @interface EnableLog {
-    LogMode mode() default LogMode.ALL;
+    LogMode mode() default LogMode.INFO;
 }

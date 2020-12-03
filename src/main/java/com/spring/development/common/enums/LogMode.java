@@ -8,5 +8,5 @@ package com.spring.development.common.enums;
  * @create: 2020-11-19 10:27
  **/
 public enum LogMode {
-    DEBUG, INFO, WARN, ERROR, ALL;
+    INFO, ERROR;
 }

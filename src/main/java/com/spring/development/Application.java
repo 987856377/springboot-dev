@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 @SpringBootApplication
 @EnableCaching
-@EnableLog(mode = LogMode.ALL)
+@EnableLog(mode = LogMode.INFO)
 public class Application {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
