@@ -23,11 +23,16 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-//    Springboot 启动扩展点:
-//    ApplicationContextInitializer ->
-//     -> BeanDefinitionRegistryPostProcessor -> BeanFactoryPostProcessor -> InstantiationAwareBeanPostProcessor -> SmartInstantiationAwareBeanPostProcessor -> BeanFactoryAware ->
-//     -> ApplicationContextAwareProcessor -> BeanNameAware -> @PostConstruct -> InitializingBean -> FactoryBean -> SmartInitializingSingleton -> CommandLineRunner -> DisposableBean ->
-//     -> ApplicationListener
+//    Springboot 启动流程及扩展点:
+//    ApplicationContextInitializer(initialize) -> AbstractApplicationContext(refresh)
+//        -> BeanDefinitionRegistryPostProcessor(postProcessBeanDefinitionRegistry) -> BeanDefinitionRegistryPostProcessor(postProcessBeanFactory)
+//        -> BeanFactoryPostProcessor(postProcessBeanFactory) -> InstantiationAwareBeanPostProcessor(postProcessBeforeInstantiation)
+//        -> SmartInstantiationAwareBeanPostProcessor(determineCandidateConstructors) -> MergedBeanDefinitionPostProcessor(postProcessMergedBeanDefinition)
+//        -> InstantiationAwareBeanPostProcessor(postProcessAfterInstantiation) -> SmartInstantiationAwareBeanPostProcessor(getEarlyBeanReference)
+//        -> BeanFactoryAware(setBeanFactory) -> InstantiationAwareBeanPostProcessor(postProcessProperties) -> ApplicationContextAwareProcessor(invokeAwareInterfaces)
+//        -> BeanNameAware(setBeanName) -> InstantiationAwareBeanPostProcessor(postProcessBeforeInitialization) -> @PostConstruct -> InitializingBean(afterPropertiesSet)
+//        -> InstantiationAwareBeanPostProcessor(postProcessAfterInitialization) -> FactoryBean(getObject) -> SmartInitializingSingleton(afterSingletonsInstantiated)
+//        -> CommandLineRunner(run) -> DisposableBean(destroy)
 
 //    我们从这些spring&springboot的扩展点当中，大致可以窥视到整个bean的生命周期。在业务开发或者写中间件业务的时候，可以合理利用spring提供给我们的扩展点，在spring启动的各个阶段内做一些事情。以达到自定义初始化的目的。
 
