@@ -1,5 +1,6 @@
 package com.spring.development.config;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
@@ -25,6 +26,17 @@ public class MvcConfig extends WebMvcConfigurationSupport {
                 .allowedMethods("OPTIONS","GET","POST","PUT","DELETE")
                 .exposedHeaders("Authorization")
                 .maxAge(3600);
+    }
+
+    /**
+     * Override this method to configure content negotiation.
+     *
+     * @param configurer
+     * @see DefaultServletHandlerConfigurer
+     */
+    @Override
+    protected void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+        configurer.defaultContentType(MediaType.APPLICATION_JSON, MediaType.TEXT_XML, MediaType.APPLICATION_XML);
     }
 
 }

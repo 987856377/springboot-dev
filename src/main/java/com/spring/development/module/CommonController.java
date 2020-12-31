@@ -1,26 +1,31 @@
 package com.spring.development.module;
 
-import com.spring.development.common.event.ApplicationNotifyEvent;
+import cn.hutool.db.Page;
+import com.spring.development.common.ResultJson;
 import com.spring.development.common.event.ApplicationMessageEvent;
-import com.spring.development.common.holder.*;
+import com.spring.development.common.event.ApplicationNotifyEvent;
+import com.spring.development.common.holder.ApplicationEventPublisherHolder;
+import com.spring.development.common.holder.EnvironmentHolder;
+import com.spring.development.common.holder.MultiDataSourceHolder;
+import com.spring.development.common.holder.ResourceLoaderHolder;
 import com.spring.development.config.SmsConfig;
+import com.spring.development.module.elasticsearch.repository.UserRepository;
 import com.spring.development.module.user.entity.User;
 import com.spring.redis.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -39,6 +44,9 @@ public class CommonController {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /*
     * @cache（“something");这个相当于save（）操作，
@@ -96,5 +104,37 @@ public class CommonController {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(Objects.requireNonNull(MultiDataSourceHolder.getDataSource("development")));
         List<Map<String, Object>> maps = jdbcTemplate.queryForList("select * from role");
         return maps;
+    }
+
+    @RequestMapping("/test/es/save")
+    public ResultJson save(){
+        com.spring.development.module.elasticsearch.Entity.User user = new com.spring.development.module.elasticsearch.Entity.User();
+        user.setId(counter.incrementAndGet());
+        user.setUsername(UUID.randomUUID().toString());
+        user.setPassword(UUID.randomUUID().toString());
+        userRepository.save(user);
+        return ResultJson.success(user);
+    }
+
+    @RequestMapping("/test/es/queryById")
+    public ResultJson queryById(@RequestBody com.spring.development.module.elasticsearch.Entity.User user){
+        Optional<com.spring.development.module.elasticsearch.Entity.User> optionalUser = userRepository.findById(user.getId());
+        return ResultJson.success(optionalUser.orElse(null));
+    }
+
+    @RequestMapping("/test/es/query")
+    public ResultJson query(@RequestBody com.spring.development.module.elasticsearch.Entity.User user){
+
+        return ResultJson.success(userRepository.findUserByUsername(user.getUsername()));
+    }
+
+    @RequestMapping("/test/es/findAll")
+    public ResultJson findAll(@RequestBody Page page){
+        return ResultJson.success(userRepository.findAll(PageRequest.of(page.getPageNumber(),page.getPageSize())));
+    }
+
+    @RequestMapping("/test/es/deleteAll")
+    public void deleteAll(){
+        userRepository.deleteAll();
     }
 }
