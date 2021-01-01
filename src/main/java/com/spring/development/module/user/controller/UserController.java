@@ -5,7 +5,6 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.spring.development.common.ResultCode;
 import com.spring.development.common.ResultJson;
 import com.spring.development.module.user.entity.User;
 import com.spring.development.module.user.service.UserService;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletOutputStream;
@@ -24,12 +22,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author XuZhenkui
@@ -43,58 +39,68 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/add")
-    public ResultJson add(@RequestBody User user){
+    public ResultJson add(@RequestBody User user) {
         return ResultJson.success(userService.insertMaster(user));
     }
 
     @RequestMapping("/update")
-    public ResultJson update(@RequestBody User user){
+    public ResultJson update(@RequestBody User user) {
         return ResultJson.success(userService.update(user));
     }
 
     @RequestMapping("/getUser")
-    public ResultJson get(@RequestBody User user){
+    public ResultJson get(@RequestBody User user) {
         return ResultJson.success(userService.getUser(user));
     }
 
     @RequestMapping("/list")
-    public ResultJson list(){
+    public ResultJson list() {
         return ResultJson.success(userService.getAllUser());
     }
 
+    @RequestMapping("/insertUser")
+    public ResultJson insertUser(@RequestBody User user) {
+        return ResultJson.success(userService.insertUser(user));
+    }
+
+    @RequestMapping("/getUserById")
+    public ResultJson getUserById(@RequestBody User user) {
+        return ResultJson.success(userService.getUserById(user.getId()));
+    }
+
     @RequestMapping("/delete")
-    public ResultJson delete(@RequestBody User user){
+    public ResultJson delete(@RequestBody User user) {
         return ResultJson.success(userService.removeById(user.getId()));
     }
 
     @RequestMapping("/toM")
     @DS("master")
-    public ResultJson toM(){
-        for ( int i = 0; i < 100; i++){
+    public ResultJson toM() {
+        for (int i = 0; i < 100; i++) {
             new Thread(() -> {
                 for (int j = 0; j < 100; j++) {
-                    userService.toM(new User("xzk","123"));
+                    userService.toM(new User("xzk", "123"));
                 }
-            },"Thread- toM - " + i + " -Running: ").start();
+            }, "Thread- toM - " + i + " -Running: ").start();
         }
         return ResultJson.success();
     }
 
     @RequestMapping("/toS")
     @DS("slave")
-    public ResultJson toS(){
-        for ( int i = 0; i < 100; i++){
-             new Thread(() -> {
-                 for (int j = 0; j < 100; j++) {
-                     userService.toS(new User("xzk","123"));
-                 }
-             },"Thread- toS - " + i + " -Running: ").start();
+    public ResultJson toS() {
+        for (int i = 0; i < 100; i++) {
+            new Thread(() -> {
+                for (int j = 0; j < 100; j++) {
+                    userService.toS(new User("xzk", "123"));
+                }
+            }, "Thread- toS - " + i + " -Running: ").start();
         }
         return ResultJson.success();
     }
 
     @RequestMapping("/download")
-    public void download(HttpServletRequest request, HttpServletResponse response){
+    public void download(HttpServletRequest request, HttpServletResponse response) {
         List<User> users = userService.getAllUser();
 
         ExcelWriter writer = null;
@@ -124,7 +130,7 @@ public class UserController {
                 String date = sdf.format(new Date());
 
                 response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
-                response.setHeader("Content-Disposition","attachment;filename=" + date + ".xlsx");
+                response.setHeader("Content-Disposition", "attachment;filename=" + date + ".xlsx");
 
                 //out为OutputStream，需要写出到的目标流
                 out = response.getOutputStream();
@@ -138,10 +144,10 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (writer != null){
+            if (writer != null) {
                 writer.close();
             }
-            if (out != null){
+            if (out != null) {
                 try {
                     out.close();
                 } catch (IOException e) {

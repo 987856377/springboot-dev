@@ -1,14 +1,13 @@
 package com.spring.development.module.user.service;
 
-import com.spring.development.module.user.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.spring.development.module.user.entity.User;
 
 import java.util.List;
-import java.util.concurrent.Future;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author XuZhenkui
@@ -19,6 +18,10 @@ public interface UserService extends IService<User> {
     Integer insertMaster(User user);
 
     Integer insertSlave(User user);
+
+    Long insertUser(User user);
+
+    User getUserById(Long id);
 
     Integer update(User user);
 

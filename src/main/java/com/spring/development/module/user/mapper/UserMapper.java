@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author XuZhenkui
@@ -17,4 +17,8 @@ public interface UserMapper extends BaseMapper<User> {
     Integer updateUser(User user);
 
     User getUser(User user);
+
+    Long insertUser(User user);
+
+    User getUserById(Long id);
 }

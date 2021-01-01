@@ -2,23 +2,22 @@ package com.spring.development.module.user.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.spring.development.module.role.entity.Role;
 import com.spring.development.module.role.service.RoleService;
 import com.spring.development.module.user.entity.User;
 import com.spring.development.module.user.mapper.UserMapper;
 import com.spring.development.module.user.service.UserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author XuZhenkui
@@ -57,10 +56,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return flag;
     }
 
+    @DS("master")
+    @Override
+    public Long insertUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Long flag = userMapper.insertUser(user);
+        return flag;
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userMapper.getUserById(id);
+    }
+
 
     @Override
     public Integer update(User user) {
-        if (user.getPassword() != null && !"".equals(user.getPassword())){
+        if (user.getPassword() != null && !"".equals(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         } else {
             user.setPassword(passwordEncoder.encode("123456"));
