@@ -36,12 +36,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private RoleService roleService;
 
+    @Transactional(rollbackFor = Exception.class)
     @DS("master")
     @Override
     public Integer insertMaster(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Integer userFlag = userMapper.insert(user);
+
+//        设置异常
+//        int a = 1/0;
+
         Integer roleFlag = roleService.insertRole(new Role("admin"));
+
+
+//        设置异常
+        int a = 1/0;
 
 //        手动回滚事务
 //        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

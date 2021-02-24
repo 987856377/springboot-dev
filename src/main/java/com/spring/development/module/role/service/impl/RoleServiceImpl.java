@@ -1,19 +1,14 @@
 package com.spring.development.module.role.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.spring.development.module.role.entity.Role;
 import com.spring.development.module.role.mapper.RoleMapper;
 import com.spring.development.module.role.service.RoleService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-
-import java.util.concurrent.Future;
 
 /**
  * <p>
@@ -37,7 +32,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         Integer flag = roleMapper.insert(role);
 
 //        设置异常
-        int a = 1/0;
+//        int a = 1/0;
         return flag;
     }
 }
