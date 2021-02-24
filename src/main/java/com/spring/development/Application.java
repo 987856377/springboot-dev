@@ -1,5 +1,6 @@
 package com.spring.development;
 
+import com.spring.development.common.annotation.EnableBeans;
 import com.spring.development.common.annotation.EnableLog;
 import com.spring.development.common.enums.LogMode;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 @SpringBootApplication
 @EnableCaching
 @EnableLog(mode = LogMode.INFO)
+@EnableBeans(packages = "com.spring.development.module.user.entity")
 public class Application {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
